@@ -10,7 +10,8 @@
           (fn [] (assoc counted-words word 1))
           
           add-occurrence-to-word 
-          (fn [] (assoc counted-words word (+ (get counted-words word) 1)))]
+          (fn [] (assoc counted-words word 
+                   (+ (get counted-words word) 1)))]
          
          (if (contains? counted-words word)
            (add-occurrence-to-word)
