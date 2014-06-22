@@ -17,4 +17,4 @@ free: 1
 
 The golang tour [view source](http://tour.golang.org)
 
-http://exercism.io/submissions/cd43ba67618f8c0ecee2d338
+http://exercism.io/submissions/4babd0dce02f280ff3d213b2
