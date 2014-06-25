@@ -17,7 +17,7 @@
     :else (str num-of-bottles " bottles")))
 
 (defn bottles-of-beer [num-of-bottles]
-    (str (bottles num-of-bottles) " of beer"))
+  (str (bottles num-of-bottles) " of beer"))
 
 (defn bottles-on-the-wall [num-of-bottles]    
   (str (bottles-of-beer num-of-bottles) " on the wall"))
@@ -41,11 +41,13 @@
 
 (defn remaining-bottles [num-of-bottles]
   (if (no-more-bottles? num-of-bottles) 
-    99 (- num-of-bottles 1)))
+    99 
+    (- num-of-bottles 1)))
 
 (defn phrase2 [num-of-bottles]
   (str (action num-of-bottles)
-       (bottles-on-the-wall (remaining-bottles num-of-bottles))
+       (bottles-on-the-wall 
+         (remaining-bottles num-of-bottles))
        ".\n"))
 
 (defn verse [num-of-bottles]
@@ -59,4 +61,6 @@
   ([from] 
    (sing from 0))
   ([from to]
-   (str/join "\n" (map verse (closed-descending-range from to)))))
+   (str/join 
+     "\n" 
+     (map verse (closed-descending-range from to)))))
