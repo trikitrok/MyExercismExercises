@@ -1,55 +1,69 @@
 (ns beer
   (:require [clojure.string :as str]))
 
-(defn no-more-bottles? [num-of-bottles]
-  (= num-of-bottles 0))
+(def on-the-wall " on the wall")
 
-(defn one-bottle? [num-of-bottles]
-  (= num-of-bottles 1))
+(def of-beer " of beer")
 
-(defn bottles [num-of-bottles] 
-  (cond  
-    (no-more-bottles? num-of-bottles) "no more bottles"
-    (one-bottle? num-of-bottles) (str num-of-bottles " bottle")
-    :else (str num-of-bottles " bottles")))
+(defn sth-of-beer [text]
+  (str text of-beer))
 
-(defn bottles-of-beer [num-of-bottles]
-  (str (bottles num-of-bottles) " of beer"))
+(defn sth-on-the-wall [text]    
+  (str (sth-of-beer text) on-the-wall))
 
-(defn bottles-on-the-wall [num-of-bottles]    
-  (str (bottles-of-beer num-of-bottles) " on the wall"))
+(defn take-down [which]
+  (str "Take " which " down and pass it around"))
 
-(defn phrase1 [num-of-bottles]
-  (str (str/capitalize (bottles-on-the-wall num-of-bottles))
-       ", "
-       (bottles-of-beer num-of-bottles)
-       ".\n"))
+(defn beer-phrase 
+  ([f text]
+   (beer-phrase f text ""))
+  ([f text plural]
+   (f (str text " bottle" plural))))
 
-(defn take-down [num-of-bottles]
+(defn paragraph [phrase1 phrase2]
+  (str phrase1 ", " phrase2 ".\n"))
+
+(defn first-paragraph
+  ([text]
+   (first-paragraph text ""))
+  ([text plural]
+   (paragraph 
+     (str/capitalize (beer-phrase sth-on-the-wall text plural))
+     (beer-phrase sth-of-beer text plural))))
+
+(defn second-paragraph
+  ([action text]
+   (second-paragraph action text ""))
+  ([action text plural]
+   (paragraph 
+     action
+     (beer-phrase sth-on-the-wall text plural))))
+
+(defmulti verse identity)
+
+(defmethod verse 0 [_]
   (str 
-    "Take "
-    (if (one-bottle? num-of-bottles) "it" "one")
-    " down and pass it around, "))
+    (first-paragraph "no more" "s")
+    (second-paragraph 
+      "Go to the store and buy some more" 99 "s")))
 
-(defn action [num-of-bottles] 
-  (if (no-more-bottles? num-of-bottles)
-    "Go to the store and buy some more, "
-    (take-down num-of-bottles)))
+(defmethod verse 1 [num-of-bottles]
+  (str 
+    (first-paragraph num-of-bottles)
+    (second-paragraph 
+      (take-down "it") "no more" "s")))
 
-(defn remaining-bottles [num-of-bottles]
-  (if (no-more-bottles? num-of-bottles) 
-    99 
-    (- num-of-bottles 1)))
+(defmethod verse 2 [num-of-bottles]
+  (str 
+    (first-paragraph num-of-bottles "s")
+    (second-paragraph 
+      (take-down "one") (- num-of-bottles 1))))
 
-(defn phrase2 [num-of-bottles]
-  (str (action num-of-bottles)
-       (bottles-on-the-wall 
-         (remaining-bottles num-of-bottles))
-       ".\n"))
-
-(defn verse [num-of-bottles]
-  (str (phrase1 num-of-bottles)
-       (phrase2 num-of-bottles)))
+(defmethod verse :default [num-of-bottles]
+  (str 
+    (first-paragraph num-of-bottles "s")
+    (second-paragraph 
+      (take-down "one") (- num-of-bottles 1) "s")))
 
 (defn closed-descending-range [from to]
   (reverse (range to (inc from))))
