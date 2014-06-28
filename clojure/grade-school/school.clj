@@ -10,8 +10,16 @@
     (conj (grade school grade-num) name)))
 
 (defn sorted [school]
-  (into {} 
-        (map 
-          (fn [[grade students]] 
-            [grade (sort students)])
-          (sort-by key school))))
+  (let
+    [sort-by-grades 
+     (partial sort-by key)
+     
+     sort-students-by-name
+     (partial map 
+              (fn [[grade students]] 
+                [grade (sort students)]))]
+    
+    (into 
+      {}  
+      (sort-students-by-name
+        (sort-by-grades school)))))
