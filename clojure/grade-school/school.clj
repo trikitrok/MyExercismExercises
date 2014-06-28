@@ -20,6 +20,8 @@
                 [grade (sort students)]))]
     
     (into 
-      {}  
-      (sort-students-by-name
-        (sort-by-grades school)))))
+      {}
+      (->
+        school
+        sort-by-grades
+        sort-students-by-name))))
