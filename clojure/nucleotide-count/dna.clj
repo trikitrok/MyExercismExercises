@@ -1,17 +1,22 @@
 (ns dna)
 
-(def nucleotides #{\A, \T, \C, \G, \U})
+(def dna-nucleotides #{\A, \T, \C, \G})
+
+(def nucleotides (conj dna-nucleotides \U))
 
 (defn nucleotide-counts [strand]
   (let
-    [count 
+    [counted-nucleotides 
+     (zipmap dna-nucleotides (repeat (count dna-nucleotides) 0))
+     
+     count 
      (fn [counted-nucleotides nucleotide]
        (assoc 
          counted-nucleotides 
          nucleotide
          (+ (get counted-nucleotides nucleotide) 1)))]
     
-    (reduce count {\A 0, \T 0, \C 0, \G 0} strand)))
+    (reduce count counted-nucleotides strand)))
 
 (defn count [nucleotide strand] 
   (if (contains? nucleotides nucleotide)
