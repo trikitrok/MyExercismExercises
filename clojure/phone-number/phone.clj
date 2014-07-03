@@ -34,6 +34,6 @@
   (let 
     [digits (extract-digits number-to-print)]
     (to-str 
-           (pretty-area-code (area-code digits))
-           " "
-           (pretty-extension (extension-digits digits)))))
+      (pretty-area-code (area-code digits))
+      " "
+      (pretty-extension (extension-digits digits)))))
