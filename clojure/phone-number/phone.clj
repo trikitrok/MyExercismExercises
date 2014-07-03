@@ -10,20 +10,30 @@
            (= (first digits) \1)) (rest digits)
       :else (repeat 10 0))))
 
-(defn number [phone-number]
-  (apply str (extract-digits phone-number)))
+(def to-str (partial apply str))
 
-(defn area-code-digits [phone-number]
-  (take 3 (extract-digits phone-number)))
+(def number (comp to-str extract-digits))
 
-(defn area-code [phone-number]
-  (apply str (area-code-digits phone-number)))
+(def area-code-digits (comp (partial take 3) extract-digits))
+
+(def area-code (comp to-str area-code-digits))
+
+(def extension-digits (comp (partial drop 3) (partial take 10)))
+
+(defn pretty-extension [extension-digits]
+  (to-str 
+    (concat 
+      (take 3 extension-digits)
+      "-"
+      (drop 3 extension-digits))))
+
+(defn pretty-area-code [area-code]
+  (to-str "(" area-code ")"))
 
 (defn pretty-print [number-to-print]
   (let 
     [digits (extract-digits number-to-print)]
-    (apply str 
-           (concat "(" (area-code-digits digits) ") "
-             (drop 3 (take 6 digits))
-             "-"
-             (drop 6 (take 10 digits))))))
+    (to-str 
+           (pretty-area-code (area-code digits))
+           " "
+           (pretty-extension (extension-digits digits)))))
