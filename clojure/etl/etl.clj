@@ -1,14 +1,23 @@
 (ns etl (:require [clojure.string :as str]))
 
-(defn transform [data-set]
+(defn transform [letters-per-score]
   (let 
-    [assoc-pairs 
-     (fn [data [letters num]]
-       (reduce
-         #(assoc %1 (str/lower-case %2) num)
-         data
-         letters))]
+    [associate-score-to-letters
+     (fn [scores-per-letter [letters num]]
+       (let
+         [associate-score-to-letter
+          (fn [scores-per-letter letter]
+            (assoc 
+              scores-per-letter 
+              (str/lower-case letter)
+              num))]
+         (reduce
+           associate-score-to-letter
+           scores-per-letter
+           letters)))]
     (reduce 
-      assoc-pairs
+      associate-score-to-letters
       {}
-      (zipmap (vals data-set) (keys data-set)))))
+      (zipmap 
+        (vals letters-per-score) 
+        (keys letters-per-score)))))
