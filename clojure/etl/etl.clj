@@ -3,14 +3,14 @@
 (defn transform [letters-per-score]
   (let 
     [associate-score-to-letters
-     (fn [scores-per-letter [letters num]]
+     (fn [scores-per-letter [letters score]]
        (let
          [associate-score-to-letter
           (fn [scores-per-letter letter]
             (assoc 
               scores-per-letter 
               (str/lower-case letter)
-              num))]
+              score))]
          (reduce
            associate-score-to-letter
            scores-per-letter
