@@ -5,26 +5,23 @@
     [seconds-per-earth-year 31557600.0]
   (/ seconds seconds-per-earth-year)))
 
-(defn on-planet [orbital-period-in-earth-years seconds]
-  (/ (on-earth seconds) orbital-period-in-earth-years))
-
 (defn on-mercury [seconds] 
-  (on-planet 0.2408467 seconds))
+  (/ (on-earth seconds) 0.2408467))
 
 (defn on-venus [seconds] 
-  (on-planet 0.61519726 seconds))
+  (/ (on-earth seconds) 0.61519726))
 
 (defn on-mars [seconds] 
-  (on-planet 1.8808158 seconds))
+  (/ (on-earth seconds) 1.8808158))
 
 (defn on-jupiter [seconds] 
-  (on-planet 11.862615 seconds))
+  (/ (on-earth seconds) 11.862615))
 
 (defn on-saturn [seconds] 
-  (on-planet 29.447498 seconds))
+  (/ (on-earth seconds) 29.447498))
 
 (defn on-uranus [seconds] 
-  (on-planet 84.016846 seconds))
+  (/ (on-earth seconds) 84.016846))
 
 (defn on-neptune [seconds] 
-  (on-planet 164.79132 seconds))
+  (/ (on-earth seconds) 164.79132))
