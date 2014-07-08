@@ -1,18 +1,16 @@
 (ns dna)
 
+(def ^:private transcriptions 
+  {\C \G 
+   \G \C
+   \A \U
+   \T \A})
+
+(defn- transcribe [nucleotide]
+  (if-let 
+    [transcribed (get transcriptions nucleotide)]
+    transcribed
+    (throw (AssertionError.))))
+
 (defn to-rna [nucleotides]
-  (let 
-    [transcribe 
-     (fn [nucleotide]
-       (let [transcriptions {\C \G 
-                             \G \C
-                             \A \U
-                             \T \A}
-             
-             transcribed (get transcriptions nucleotide)]
-         
-         (if (nil? transcribed)
-           (throw (AssertionError.))
-           transcribed)))]
-    
-    (apply str (map transcribe nucleotides))))
+  (apply str (map transcribe nucleotides)))
