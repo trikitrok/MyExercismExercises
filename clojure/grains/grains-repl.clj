@@ -14,7 +14,8 @@
     [(f [i stream-rest]
         (let
           [pair (stream-rest)]
-        (when (not= i 0)
+        (if (zero? i)
+          nil
           (cons (first pair)
                 (f (- i 1) (second pair))))))]
     (f n stream)))
