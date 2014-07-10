@@ -1,12 +1,12 @@
 (ns grains)
 
-(defn grains []  
+(defn- grains []  
   (letfn
     [(f [n]
         (seq [n (fn [] (f (* 2 n)))]))]
     (f 1N)))
 
-(defn stream-for-n-steps [stream n]
+(defn- stream-for-n-steps [stream n]
   (letfn 
     [(f [i stream-rest]
         (let 
