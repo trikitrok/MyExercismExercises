@@ -85,27 +85,12 @@
     #(intern 'meetup (symbol (str % "teenth")) (day-teenth (symbol %))) 
     week-days-str))
 
-(doall
-  (map 
-    #(intern 'meetup (symbol (str "first-" %1 "day")) (get-week-day first (symbol %))) 
-    week-days-str))
+(def func-names ["first" "second" "third" "fourth" "last"])
 
 (doall
   (map 
-    #(intern 'meetup (symbol (str "second-" %1 "day")) (get-week-day second (symbol %))) 
-    week-days-str))
-
-(doall
-  (map 
-    #(intern 'meetup (symbol (str "third-" %1 "day")) (get-week-day third (symbol %))) 
-    week-days-str))
-
-(doall
-  (map 
-    #(intern 'meetup (symbol (str "fourth-" %1 "day")) (get-week-day fourth (symbol %))) 
-    week-days-str))
-
-(doall
-  (map 
-    #(intern 'meetup (symbol (str "last-" %1 "day")) (get-week-day last (symbol %))) 
-    week-days-str))
+    #(intern 
+       'meetup 
+       (symbol (str (first %) "-" (second %) "day"))
+       (get-week-day (resolve (symbol(first %))) (symbol (second %)))) 
+    (for [x func-names y week-days-str] [x y])))
