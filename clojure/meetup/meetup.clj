@@ -50,13 +50,13 @@
 
 (defn is-week-day? [week-day date]
   (let
-    [week-days {:MON 1 :TUE 2 :WED 3 :THU 4 :FRI 5 :SAT 6 :SUN 7}]
-  (= (week-days week-day) (compute-week-day date))))
+    [week-days {'mon 1 'tues 2 'wednes 3 'thurs 4 'fri 5 'satur 6 'sun 7}]
+    (= (week-days week-day) (compute-week-day date))))
 
 (defn is-teenth? [{day :day}] 
   (let
     [teenth-days (set (range 13 20))]
-  (teenth-days day)))
+    (teenth-days day)))
 
 (defn days-of-month-that-is [week-day]
   (comp (partial filter (partial is-week-day? week-day)) dates-in-month))
@@ -68,13 +68,9 @@
         (partial filter #(is-teenth? %))
         (days-of-month-that-is week-day)))
 
-(def monteenth (day-teenth :MON))
-(def tuesteenth (day-teenth :TUE))
-(def wednesteenth (day-teenth :WED))
-(def thursteenth (day-teenth :THU))
-(def friteenth (day-teenth :FRI))
-(def saturteenth (day-teenth :SAT))
-(def sunteenth (day-teenth :SUN))
+(defn third [ls] (nth ls 2))
+
+(defn fourth [ls] (nth ls 3))
 
 (defn get-week-day [pos week-day]
   (comp vec 
@@ -82,46 +78,34 @@
         pos
         (days-of-month-that-is week-day)))
 
-(def first-monday (get-week-day first :MON))
-(def first-tuesday (get-week-day first :TUE))
-(def first-wednesday (get-week-day first :WED))
-(def first-thursday (get-week-day first :THU))
-(def first-friday (get-week-day first :FRI))
-(def first-saturday (get-week-day first :SAT))
-(def first-sunday (get-week-day first :SUN))
+(def week-days-str ["mon" "tues" "wednes" "thurs" "fri" "satur" "sun"])
 
-(def second-monday (get-week-day second :MON))
-(def second-tuesday (get-week-day second :TUE))
-(def second-wednesday (get-week-day second :WED))
-(def second-thursday (get-week-day second :THU))
-(def second-friday (get-week-day second :FRI))
-(def second-saturday (get-week-day second :SAT))
-(def second-sunday (get-week-day second :SUN))
+(doall
+  (map 
+    #(intern 'meetup (symbol (str % "teenth")) (day-teenth (symbol %))) 
+    week-days-str))
 
-(defn third [ls] (nth ls 2))
+(doall
+  (map 
+    #(intern 'meetup (symbol (str "first-" %1 "day")) (get-week-day first (symbol %))) 
+    week-days-str))
 
-(def third-monday (get-week-day third :MON))
-(def third-tuesday (get-week-day third :TUE))
-(def third-wednesday (get-week-day third :WED))
-(def third-thursday (get-week-day third :THU))
-(def third-friday (get-week-day third :FRI))
-(def third-saturday (get-week-day third :SAT))
-(def third-sunday (get-week-day third :SUN))
+(doall
+  (map 
+    #(intern 'meetup (symbol (str "second-" %1 "day")) (get-week-day second (symbol %))) 
+    week-days-str))
 
-(defn fourth [ls] (nth ls 3))
+(doall
+  (map 
+    #(intern 'meetup (symbol (str "third-" %1 "day")) (get-week-day third (symbol %))) 
+    week-days-str))
 
-(def fourth-monday (get-week-day fourth :MON))
-(def fourth-tuesday (get-week-day fourth :TUE))
-(def fourth-wednesday (get-week-day fourth :WED))
-(def fourth-thursday (get-week-day fourth :THU))
-(def fourth-friday (get-week-day fourth :FRI))
-(def fourth-saturday (get-week-day fourth :SAT))
-(def fourth-sunday (get-week-day fourth :SUN))
+(doall
+  (map 
+    #(intern 'meetup (symbol (str "fourth-" %1 "day")) (get-week-day fourth (symbol %))) 
+    week-days-str))
 
-(def last-monday (get-week-day last :MON))
-(def last-tuesday (get-week-day last :TUE))
-(def last-wednesday (get-week-day last :WED))
-(def last-thursday (get-week-day last :THU))
-(def last-friday (get-week-day last :FRI))
-(def last-saturday (get-week-day last :SAT))
-(def last-sunday (get-week-day last :SUN))
+(doall
+  (map 
+    #(intern 'meetup (symbol (str "last-" %1 "day")) (get-week-day last (symbol %))) 
+    week-days-str))
