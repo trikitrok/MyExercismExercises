@@ -48,10 +48,10 @@
   (map (fn [day] (Date. year month day)) 
        (range 1 (+ (last-day-in-month month year) 1))))
 
+(def week-days {'mon 1 'tues 2 'wednes 3 'thurs 4 'fri 5 'satur 6 'sun 7})
+
 (defn is-week-day? [week-day date]
-  (let
-    [week-days {'mon 1 'tues 2 'wednes 3 'thurs 4 'fri 5 'satur 6 'sun 7}]
-    (= (week-days week-day) (compute-week-day date))))
+  (= (week-days week-day) (compute-week-day date)))
 
 (defn is-teenth? [{day :day}] 
   (let
@@ -78,12 +78,10 @@
         pos
         (days-of-month-that-is week-day)))
 
-(def week-days-str ["mon" "tues" "wednes" "thurs" "fri" "satur" "sun"])
-
 (doall
   (map 
-    #(intern 'meetup (symbol (str % "teenth")) (day-teenth (symbol %))) 
-    week-days-str))
+    #(intern 'meetup (symbol (str (name %) "teenth")) (day-teenth %)) 
+    (keys week-days)))
 
 (def func-names ["first" "second" "third" "fourth" "last"])
 
@@ -91,6 +89,8 @@
   (map 
     #(intern 
        'meetup 
-       (symbol (str (first %) "-" (second %) "day"))
-       (get-week-day (resolve (symbol(first %))) (symbol (second %)))) 
-    (for [x func-names y week-days-str] [x y])))
+       (symbol (str (first %) "-" (name (second %)) "day"))
+       (get-week-day (resolve (symbol(first %))) (second %))) 
+    (for [func-name func-names 
+          week-day (keys week-days)] 
+      [func-name week-day])))
