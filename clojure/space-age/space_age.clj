@@ -1,41 +1,39 @@
 (ns space-age)
 
+(def planets 
+  ['mercury
+   'venus
+   'mars
+   'jupiter
+   'saturn
+   'uranus
+   'neptune])
+
+(def orbital-periods-in-earth-years 
+  (zipmap 
+    planets 
+    [0.2408467
+     0.61519726
+     1.8808158
+     11.862615
+     29.447498
+     84.016846
+     164.79132]))
+
 (defn on-earth [seconds]
-  (let 
+  (let
     [seconds-per-earth-year 31557600.0]
     (/ seconds seconds-per-earth-year)))
 
-(defn on-mercury [seconds] 
-  (let 
-    [orbital-period-in-earth-years 0.2408467]
+(defn make-on-planet-function [orbital-period-in-earth-years]
+  (fn [seconds]
     (/ (on-earth seconds) orbital-period-in-earth-years)))
 
-(defn on-venus [seconds] 
-  (let
-    [orbital-period-in-earth-years 0.61519726]
-    (/ (on-earth seconds) orbital-period-in-earth-years)))
-
-(defn on-mars [seconds] 
-  (let
-    [orbital-period-in-earth-years 1.8808158]
-    (/ (on-earth seconds) orbital-period-in-earth-years)))
-
-(defn on-jupiter [seconds] 
-  (let
-    [orbital-period-in-earth-years 11.862615]
-    (/ (on-earth seconds) orbital-period-in-earth-years)))
-
-(defn on-saturn [seconds] 
-  (let
-    [orbital-period-in-earth-years 29.447498]
-    (/ (on-earth seconds) orbital-period-in-earth-years)))
-
-(defn on-uranus [seconds] 
-  (let
-    [orbital-period-in-earth-years 84.016846]
-    (/ (on-earth seconds) orbital-period-in-earth-years)))
-
-(defn on-neptune [seconds] 
-  (let
-    [orbital-period-in-earth-years 164.79132]
-    (/ (on-earth seconds) orbital-period-in-earth-years)))
+(doall
+  (map 
+    #(intern 
+       'space-age 
+       (symbol (str "on-" (name %))) 
+       (make-on-planet-function 
+         (% orbital-periods-in-earth-years))) 
+    planets))
