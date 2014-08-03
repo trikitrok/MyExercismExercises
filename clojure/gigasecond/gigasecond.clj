@@ -1,6 +1,6 @@
 (ns gigasecond
   (:require [clojure.string :as str])
-  (:import [java.util Date Calendar]
+  (:import [java.util Calendar]
            [java.text SimpleDateFormat]))
 
 (defn- date [year month day]
