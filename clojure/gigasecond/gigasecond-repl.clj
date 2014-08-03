@@ -34,9 +34,10 @@ calendar
 (.get calendar (Calendar/DATE))
 
 
-(..
- calendar
- (setTime (.parse (SimpleDateFormat. "yyyy-MM-dd") "2008-01-02")))
+
+;(..
+; calendar
+; (setTime (.parse (SimpleDateFormat. "yyyy-MM-dd") "2008-01-02")))
 
 calendar
 
