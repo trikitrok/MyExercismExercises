@@ -22,7 +22,7 @@
    (+ (.get date (Calendar/MONTH)) 1)
    (.get date (Calendar/DATE))])
 
-(def GS_IN_DAYS 
+(def ^:private GS_IN_DAYS 
   (/ (reduce * (repeat 9 10))
      (* 60 60 24)))
 
