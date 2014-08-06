@@ -1,6 +1,6 @@
 (ns space-age)
 
-(def planets 
+(def ^:private planets 
   ['mercury
    'venus
    'mars
@@ -9,7 +9,7 @@
    'uranus
    'neptune])
 
-(def orbital-periods-in-earth-years 
+(def ^:private orbital-periods-in-earth-years 
   (zipmap 
     planets 
     [0.2408467
@@ -25,7 +25,7 @@
     [seconds-per-earth-year 31557600.0]
     (/ seconds seconds-per-earth-year)))
 
-(defn make-on-planet-function [orbital-period-in-earth-years]
+(defn- make-on-planet-function [orbital-period-in-earth-years]
   (fn [seconds]
     (/ (on-earth seconds) orbital-period-in-earth-years)))
 
