@@ -19,7 +19,7 @@
 (def ^:private factor?
   (comp zero? rem))
 
-(defn prime-factors [n]
+(defn- prime-factors [n]
   (loop [n n prime 2 factors []]
     (cond 
       (= n 1) factors
