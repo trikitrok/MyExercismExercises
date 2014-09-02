@@ -1,12 +1,13 @@
 (ns word-count
   (:require [clojure.string :as str]))
 
-(def ^:private remove-punctuation 
-  (comp (partial apply str)
-        (partial filter 
-                 #(or (Character/isLetter %) 
-                      (Character/isSpace %)
-                      (Character/isDigit %)))))
+(defn- remove-punctuation [sentence]
+  (->> 
+    sentence
+    (filter #(or (Character/isLetter %) 
+                 (Character/isSpace %)
+                 (Character/isDigit %)))
+    (apply str)))
 
 (defn- extract-words-from [sentence] 
   (str/split (remove-punctuation (str/lower-case sentence)) #"\s+"))
