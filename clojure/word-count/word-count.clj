@@ -1,7 +1,7 @@
 (ns word-count
   (:require [clojure.string :as str]))
 
-(def remove-punctuation 
+(def ^:private remove-punctuation 
   (comp (partial apply str)
         (partial filter 
                  #(or (Character/isLetter %) 
