@@ -1,64 +1,80 @@
-(def scores [1 2 4 8 16 32 64 128])
-
-(filter #(> 3 %) scores)
-
-(defn pairs-with [a ls]
-  (map #(cons a [%]) ls))
-
-(pairs-with 3 [1 2 3])
-
-
-(defn all-pairs [ls]
-  (cond (empty? ls) '()
-        :else (concat (pairs-with (first ls) (rest ls))
-                      (all-pairs (rest ls)))))
-
-(all-pairs ["a" "b" "c"])
-
-(all-pairs ["a" "b" "c" "d"])
-
-(defn- searc-helper [score num-set nums]
-  (if (empty? nums)
-      false
-      (let [current-num (first nums)
-            sum (+ current-num (reduce + num-set))
-            num-set-with-current-num (conj num-set current-num)]
-        (cond (= score sum) num-set-with-current-num
-              (> score sum) (if-let [res (searc-helper score num-set-with-current-num (rest nums))]
-                              res
-                              (searc-helper score num-set (rest nums)))
-              (< score sum) (searc-helper score num-set (rest nums))))))
-
-(defn search-subset [score nums]
-  (searc-helper score #{} nums))
-
-(search-subset 5 [1 3 4])
-
-(search-subset 5 [3 3 4 2])
+(ns allergies (:require [clojure.test :refer :all]))
 
 (def ^:private allergies-by-score
-  {128 "cats"
-    64 "pollen"
-    32 "chocolate"
-    16 "tomatoes"
-    8 "strawberries"
-    4 "shellfish"
-    2 "peanuts"
-   1 "eggs"})
+  { 1 "eggs"
+   2 "peanuts"
+   4 "shellfish"
+   8 "strawberries"
+   16 "tomatoes"
+   32 "chocolate"
+   64 "pollen"
+   128 "cats"})
 
-(keys allergies-by-score)
+(defn- search [score allergy-scores]
+  (loop [s score
+         n (dec (count allergy-scores))
+         acc #{}]
+    (if (or (zero? s) (neg? n))
+      acc
+      (let [allergy-score (nth allergy-scores n)]
+        (if (>= s allergy-score)
+          (recur (- s allergy-score) n (conj acc allergy-score))
+          (recur s (dec n) acc))))))
 
-(defn- several-allergies [score]
-  (let [allergies-ids (keys allergies-by-score)]
-    (map #(get allergies-by-score %)
-         (search-subset score (filter #(< % score) allergies-ids)))))
+(defn list [score]
+  (let [possible-allergies-ids (filter #(<= % score) (keys allergies-by-score))]
+    (vec (map #(get allergies-by-score %)
+         (search score possible-allergies-ids)))))
 
-(several-allergies 5)
+(allergies/list 248)
 
-(reduce + (keys allergies-by-score))
+(defn allergic_to? [score stuff]
+  (some #{stuff} (list score)))
 
-(several-allergies 253)
 
-(several-allergies 254)
+(allergies/list 509)
 
-(several-allergies 255)
+
+(defn same-content? [xs ys]
+  (= (sort xs) (sort ys)))
+
+(deftest no-allergies-at-all
+  (is (= [] (allergies/list 0))))
+
+(deftest allergic-to-just-eggs
+  (is (= ["eggs"] (allergies/list 1))))
+
+(deftest allergic-to-just-peanuts
+  (is (= ["peanuts"] (allergies/list 2))))
+
+(deftest allergic-to-just-strawberries
+  (is (= ["strawberries"] (allergies/list 8))))
+
+(deftest allergic-to-eggs-and-peanuts
+  (is (same-content? ["eggs", "peanuts"] (allergies/list 3))))
+
+(deftest allergic-to-more-than-eggs-but-not-peanuts
+  (is (same-content? ["eggs", "shellfish"] (allergies/list 5))))
+
+(deftest allergic-to-lots-of-stuff
+  (is (same-content? ["strawberries", "tomatoes", "chocolate", "pollen", "cats"] (allergies/list 248))))
+
+(deftest allergic-to-everything
+  (is (same-content? ["eggs", "peanuts", "shellfish", "strawberries", "tomatoes", "chocolate", "pollen", "cats"] (allergies/list 255))))
+
+(deftest no-allergies-means-not-allergic
+  (is (not (allergies/allergic_to? 0 "peanuts")))
+  (is (not (allergies/allergic_to? 0 "cats")))
+  (is (not (allergies/allergic_to? 0 "strawberries"))))
+
+(deftest is-allergic-to-eggs
+  (is (allergies/allergic_to? 1 "eggs")))
+
+(deftest allergic-to-eggs-in-addition-to-other-stuff
+  (is (allergies/allergic_to? 5 "eggs")))
+
+(deftest ignore-non-allergen-score-parts
+  (is (same-content? ["eggs", "shellfish", "strawberries", "tomatoes", "chocolate", "pollen", "cats"] (allergies/list 509))))
+
+(run-tests)
+
