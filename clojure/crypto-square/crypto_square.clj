@@ -1,15 +1,13 @@
 (ns crypto-square
   (:require [clojure.string :as clj-str]))
 
-(defn- no-punctuation [c]
-  (or (Character/isLetter c)
-      (Character/isDigit c)))
-
 (defn- remove-punctuation [text]
-  (clj-str/join "" (filter no-punctuation text)))
+  (apply str (re-seq #"\w+" text)))
 
 (defn normalize-plaintext [text]
-  (clj-str/lower-case (remove-punctuation text)))
+  (->> text
+       remove-punctuation
+       clj-str/lower-case))
 
 (defn square-size [text]
   (int (Math/ceil (Math/sqrt (count text)))))
