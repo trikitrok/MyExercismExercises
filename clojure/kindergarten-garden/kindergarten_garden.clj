@@ -31,7 +31,7 @@
 (def ^:private strs->keys
   (partial map #(keyword %)))
 
-(defn children-keys [children-strs]
+(defn- children-keys [children-strs]
   (->> children-strs
        lowercase-all
        sort
