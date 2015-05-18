@@ -15,14 +15,14 @@
   (map #(vec (get-plants %))
        (clojure.string/split diagram #"\n")))
 
-(defn- plants-per-child-in-row [row-index rows]
+(defn- plants-per-child-in-rows [child-index rows]
   (vec
     (flatten
-      (map #(vector (get % row-index) (get % (inc row-index))) rows))))
+      (map #(vector (get % child-index) (get % (inc child-index))) rows))))
 
 (defn- plants-per-child [diagram]
   (let [num-cols (.indexOf diagram "\n")]
-    (map #(plants-per-child-in-row (* 2 %) (plants-rows diagram))
+    (map #(plants-per-child-in-rows (* 2 %) (plants-rows diagram))
          (range 0 (quot num-cols 2)))))
 
 (def ^:private lowercase-all
