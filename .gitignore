@@ -1,2 +1,6 @@
 Readme.txt
 *~*
+target
+.nrepl-port
+.idea
+*.iml
