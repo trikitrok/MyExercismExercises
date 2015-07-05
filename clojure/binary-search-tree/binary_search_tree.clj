@@ -20,18 +20,17 @@
 (defn from-list [[root & rest-nodes]]
   (reduce #(insert %2 %1) (singleton root) rest-nodes))
 
-(defn- to-list-helper [acc tree]
-  (cond
-    (and (left tree) (not (right tree)))
-    (conj (to-list-helper acc (left tree)) (value tree))
+(defn to-list
+  ([tree] (to-list [] tree))
+  ([acc tree]
+    (cond
+      (and (left tree) (not (right tree)))
+      (conj (to-list acc (left tree)) (value tree))
 
-    (and (not (left tree)) (right tree))
-    (to-list-helper (conj acc (value tree)) (right tree))
+      (and (not (left tree)) (right tree))
+      (to-list (conj acc (value tree)) (right tree))
 
-    (and (left tree) (right tree))
-    (to-list-helper (conj (to-list-helper acc (left tree)) (value tree)) (right tree))
+      (and (left tree) (right tree))
+      (to-list (conj (to-list acc (left tree)) (value tree)) (right tree))
 
-    :else (conj acc (value tree))))
-
-(defn to-list [tree]
-  (to-list-helper [] tree))
+      :else (conj acc (value tree)))))
