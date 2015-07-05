@@ -20,12 +20,20 @@
 (defn from-list [[root & rest-nodes]]
   (reduce #(insert %2 %1) (singleton root) rest-nodes))
 
+(def ^:private children (juxt left value right))
+
+(defn- leaf? [node]
+  (not (or (map? node) (nil? node))))
+
 (defn to-list [tree]
-  (if tree
-    (concat (to-list (left tree))
-            [(value tree)]
-            (to-list (right tree)))
-    []))
+  (filter leaf? (tree-seq map? children tree)))
+
+;(defn to-list [tree]
+;  (if tree
+;    (concat (to-list (left tree))
+;            [(value tree)]
+;            (to-list (right tree)))
+;    []))
 
 ;(defn to-list
 ;  ([tree] (to-list [] tree))
