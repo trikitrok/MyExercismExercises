@@ -6,7 +6,7 @@
           [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]))
 
 (defn- hex-digits [hex]
-  (drop 1 (str/split hex #"")))
+  (drop 1 (str/split (str/lower-case hex) #"")))
 
 (defn- hex-digit->int-digit [hex-digit]
   (get ints-by-hex-digit hex-digit))

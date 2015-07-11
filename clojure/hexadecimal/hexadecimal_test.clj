@@ -16,6 +16,9 @@
   (is (= 16776960 (hexadecimal/hex-to-int "ffff00")))
   (is (= 0 (hexadecimal/hex-to-int "000000"))))
 
+(deftest hex-to-int-containing-upper-case-letters
+  (is (= 175 (hexadecimal/hex-to-int "AF"))))
+
 (deftest hex-to-int-invalid-hex
   (is (= 0 (hexadecimal/hex-to-int "carrot"))))
 
