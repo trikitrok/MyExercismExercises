@@ -8,7 +8,7 @@
 (defn- hex-digits [hex]
   (drop 1 (str/split hex #"")))
 
-(defn hex-digit->int-digit [hex-digit]
+(defn- hex-digit->int-digit [hex-digit]
   (get ints-by-hex-digit hex-digit))
 
 (defn- valid-hex? [hex-digits]
