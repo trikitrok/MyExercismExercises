@@ -11,21 +11,27 @@
 (defn hex-digit->int-digit [hex-digit]
   (get ints-by-hex-digit hex-digit))
 
-(defn- valid-hex-digits? [hex-digits]
+(defn- valid-hex? [hex-digits]
   (every? (complement nil?)
           (map hex-digit->int-digit hex-digits)))
 
 (defn- pow [base exp]
   (reduce * (repeat exp base)))
 
-(defn- hex-digit-in-position->int
+(defn- hex-in-position->int
   [position hex-digit]
   (* (hex-digit->int-digit hex-digit)
      (pow 16 position)))
 
+(defn- reversed-hex-digits->int
+  [reversed-hex-digits]
+  (if (valid-hex? reversed-hex-digits)
+    (reduce + (map-indexed hex-in-position->int
+                           reversed-hex-digits))
+    0))
+
 (defn hex-to-int [hex]
-  (let [hex-digits (hex-digits hex)]
-    (if (valid-hex-digits? hex-digits)
-      (reduce + (map-indexed hex-digit-in-position->int
-                             (reverse hex-digits)))
-      0)))
+  (->> hex
+       hex-digits
+       reverse
+       reversed-hex-digits->int))
