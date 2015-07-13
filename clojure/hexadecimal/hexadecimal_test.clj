@@ -23,4 +23,3 @@
   (is (= 0 (hexadecimal/hex-to-int "carrot"))))
 
 (run-tests)
-

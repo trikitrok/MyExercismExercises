@@ -8,8 +8,8 @@
 (defn- hex-digits [hex]
   (drop 1 (str/split (str/lower-case hex) #"")))
 
-(defn- hex-digit->int-digit [hex-digit]
-  (get ints-by-hex-digit hex-digit))
+(def ^:private hex-digit->int-digit
+  (partial get ints-by-hex-digit))
 
 (defn- valid-hex? [hex-digits]
   (every? (complement nil?)
