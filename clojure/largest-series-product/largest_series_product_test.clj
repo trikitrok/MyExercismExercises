@@ -18,7 +18,7 @@
   (is (= 270 (largest-series-product/largest-product 3 "1027839564")))
   (is (= 15120 (largest-series-product/largest-product 5 "0123456789")))
   (is (= 23520 (largest-series-product/largest-product 6 "73167176531330624919225119674426574742355349194934")))
-  (is (= 28350 ( largest-series-product/largest-product 6 "52677741234314237566414902593461595376319419139427")))
+  (is (= 28350 (largest-series-product/largest-product 6 "52677741234314237566414902593461595376319419139427")))
   (is (= 1 (largest-series-product/largest-product 0 "")))
   ;; unlike the Ruby implementation no error is expected for too small input
   (is (= 1 (largest-series-product/largest-product 4 "123")))
@@ -26,4 +26,3 @@
   (is (= 0 (largest-series-product/largest-product 2 "00"))))
 
 (run-tests)
-

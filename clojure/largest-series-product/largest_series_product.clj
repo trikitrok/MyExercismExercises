@@ -13,8 +13,12 @@
        (map (partial apply *))
        (apply max)))
 
+(defn- invalid-input? [size string-of-digits]
+  (let [too-small-input? #(> size (count string-of-digits))
+        empty-input? #(clojure.string/blank? string-of-digits)]
+    (or (empty-input?) (too-small-input?))))
+
 (defn largest-product [size string-of-digits]
-  (if (or (clojure.string/blank? string-of-digits)
-          (> size (count string-of-digits)))
+  (if (invalid-input? size string-of-digits)
     1
     (compute-largest-product size string-of-digits)))
